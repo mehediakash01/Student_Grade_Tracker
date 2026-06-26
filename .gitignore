@@ -1,0 +1,6 @@
+.agents
+node_modules
+.DS_Store
+skills-lock.json
+.env
+.puku
