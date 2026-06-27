@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'src/features/dashboard/dashboard_screen.dart';
+import 'src/features/dashboard/presentation/dashboard_screen.dart';
 import 'src/providers/grade_provider.dart';
 import 'src/providers/theme_provider.dart';
 import 'src/theme/app_theme.dart';

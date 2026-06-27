@@ -14,15 +14,24 @@ class SummaryScreen extends StatelessWidget {
     return Consumer<GradeProvider>(
       builder: (context, gradeProvider, _) {
         return Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text(
+                'Academic Summary',
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
               _SummaryCard(
                 title: 'Total Subjects',
                 value: gradeProvider.totalSubjects.toString(),
-                icon: Icons.library_books,
+                icon: Icons.library_books_rounded,
                 colorScheme: colorScheme,
                 textTheme: theme.textTheme,
               ),
@@ -30,7 +39,7 @@ class SummaryScreen extends StatelessWidget {
               _SummaryCard(
                 title: 'Average Mark',
                 value: gradeProvider.averageMark.toStringAsFixed(1),
-                icon: Icons.calculate,
+                icon: Icons.calculate_rounded,
                 colorScheme: colorScheme,
                 textTheme: theme.textTheme,
               ),
@@ -38,7 +47,7 @@ class SummaryScreen extends StatelessWidget {
               _SummaryCard(
                 title: 'Overall Grade',
                 value: gradeProvider.overallGrade,
-                icon: Icons.grade,
+                icon: Icons.workspace_premium_rounded,
                 colorScheme: colorScheme,
                 textTheme: theme.textTheme,
               ),
@@ -67,16 +76,40 @@ class _SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            colorScheme.primaryContainer,
+            colorScheme.primaryContainer.withOpacity(0.6),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.shadow.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Row(
           children: [
-            Icon(
-              icon,
-              size: 48,
-              color: colorScheme.primary,
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: colorScheme.onPrimaryContainer.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                icon,
+                size: 36,
+                color: colorScheme.onPrimaryContainer,
+              ),
             ),
             const SizedBox(width: 24),
             Expanded(
@@ -86,14 +119,14 @@ class _SummaryCard extends StatelessWidget {
                   Text(
                     title,
                     style: textTheme.titleMedium?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
+                      color: colorScheme.onPrimaryContainer.withOpacity(0.8),
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     value,
                     style: textTheme.headlineMedium?.copyWith(
-                      color: colorScheme.onSurface,
+                      color: colorScheme.onPrimaryContainer,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

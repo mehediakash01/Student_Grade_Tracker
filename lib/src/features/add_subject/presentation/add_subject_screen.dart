@@ -4,14 +4,26 @@ import 'package:provider/provider.dart';
 import '../../../models/subject.dart';
 import '../../../providers/grade_provider.dart';
 
-class AddSubjectScreen extends StatelessWidget {
-  AddSubjectScreen({super.key});
+class AddSubjectScreen extends StatefulWidget {
+  const AddSubjectScreen({super.key});
 
+  @override
+  State<AddSubjectScreen> createState() => _AddSubjectScreenState();
+}
+
+class _AddSubjectScreenState extends State<AddSubjectScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _marksController = TextEditingController();
 
-  void _submit(BuildContext context) {
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _marksController.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
     if (_formKey.currentState!.validate()) {
       final name = _nameController.text.trim();
       final marks = double.parse(_marksController.text.trim());
@@ -24,7 +36,13 @@ class AddSubjectScreen extends StatelessWidget {
       FocusScope.of(context).unfocus();
       
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Subject added successfully')),
+        SnackBar(
+          content: const Text('Subject added successfully'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
       );
     }
   }
@@ -43,6 +61,12 @@ class AddSubjectScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Icon(
+                Icons.add_task_rounded,
+                size: 64,
+                color: colorScheme.primary,
+              ),
+              const SizedBox(height: 16),
               Text(
                 'Add New Subject',
                 style: theme.textTheme.headlineMedium?.copyWith(
@@ -56,8 +80,7 @@ class AddSubjectScreen extends StatelessWidget {
                 controller: _nameController,
                 decoration: const InputDecoration(
                   labelText: 'Subject Name',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.book),
+                  prefixIcon: Icon(Icons.menu_book_rounded),
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
@@ -66,13 +89,12 @@ class AddSubjectScreen extends StatelessWidget {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               TextFormField(
                 controller: _marksController,
                 decoration: const InputDecoration(
-                  labelText: 'Marks',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.score),
+                  labelText: 'Marks (0 - 100)',
+                  prefixIcon: Icon(Icons.score_rounded),
                 ),
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 validator: (value) {
@@ -89,15 +111,11 @@ class AddSubjectScreen extends StatelessWidget {
                   return null;
                 },
               ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () => _submit(context),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: colorScheme.primary,
-                  foregroundColor: colorScheme.onPrimary,
-                ),
-                child: const Text('Add Subject'),
+              const SizedBox(height: 40),
+              FilledButton.icon(
+                onPressed: _submit,
+                icon: const Icon(Icons.add),
+                label: const Text('Add Subject'),
               ),
             ],
           ),
