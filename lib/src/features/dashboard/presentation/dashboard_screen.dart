@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../providers/theme_provider.dart';
+import '../../add_subject/presentation/add_subject_screen.dart';
+import '../../subject_list/presentation/subject_list_screen.dart';
+import '../../summary/presentation/summary_screen.dart';
+
 class DashboardNavigationState extends ChangeNotifier {
   int _currentIndex = 0;
   int get currentIndex => _currentIndex;
@@ -28,10 +33,10 @@ class DashboardScreen extends StatelessWidget {
 class _DashboardView extends StatelessWidget {
   const _DashboardView();
 
-  static const List<Widget> _screens = [
+  static final List<Widget> _screens = [
     AddSubjectScreen(),
-    SubjectListScreen(),
-    SummaryScreen(),
+    const SubjectListScreen(),
+    const SummaryScreen(),
   ];
 
   @override
@@ -44,16 +49,16 @@ class _DashboardView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Dashboard'),
         actions: [
-          IconButton(
-            icon: Icon(
-              colorScheme.brightness == Brightness.light
-                  ? Icons.dark_mode
-                  : Icons.light_mode,
+          Consumer<ThemeProvider>(
+            builder: (context, themeProvider, _) => IconButton(
+              tooltip: themeProvider.isDark
+                  ? 'Switch to light theme'
+                  : 'Switch to dark theme',
+              icon: Icon(
+                themeProvider.isDark ? Icons.light_mode : Icons.dark_mode,
+              ),
+              onPressed: themeProvider.toggleTheme,
             ),
-            onPressed: () {
-              // TODO: connect to real ThemeProvider
-              // context.read<ThemeProvider>().toggleTheme();
-            },
           ),
         ],
       ),
@@ -84,50 +89,6 @@ class _DashboardView extends StatelessWidget {
             label: 'Summary',
           ),
         ],
-      ),
-    );
-  }
-}
-
-// Placeholders
-
-class AddSubjectScreen extends StatelessWidget {
-  const AddSubjectScreen({super.key});
-  
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Add Subject',
-        style: Theme.of(context).textTheme.headlineMedium,
-      ),
-    );
-  }
-}
-
-class SubjectListScreen extends StatelessWidget {
-  const SubjectListScreen({super.key});
-  
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Subject List',
-        style: Theme.of(context).textTheme.headlineMedium,
-      ),
-    );
-  }
-}
-
-class SummaryScreen extends StatelessWidget {
-  const SummaryScreen({super.key});
-  
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Summary',
-        style: Theme.of(context).textTheme.headlineMedium,
       ),
     );
   }

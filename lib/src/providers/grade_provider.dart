@@ -38,7 +38,8 @@ class GradeProvider extends ChangeNotifier {
     _subjects.removeAt(index);
     notifyListeners();
   }
-}
+  void updateSubject(int index, Subject subject) {
+    if (index < 0 || index >= _subjects.length) return;
     _subjects[index] = subject;
     notifyListeners();
   }

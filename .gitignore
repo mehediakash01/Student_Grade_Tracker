@@ -3,4 +3,9 @@ node_modules
 .DS_Store
 skills-lock.json
 .env
-
+.dart_tool/
+.idea/
+.metadata
+build/
+*.iml
+lib/src/features/dashboard/dashboard_screen.dart
